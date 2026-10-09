@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistem Penilaian Rapor MAN 3 Bogor</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #eef3ff, #f9fbff);
+      color: #1d2a3a;
+    }
+    .login-box {
+      max-width: 420px;
+      margin: 120px auto;
+      background: #fff;
+      padding: 30px 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    .hidden { display: none; }
+    h2, h3 {
+      margin-top: 0;
+      text-align: center;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    label {
+      font-weight: bold;
+      font-size: 14px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #cfd8e3;
+      font-size: 14px;
+    }
+    button {
+      background: #1e5eff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s ease;
+    }
+    button:hover {
+      background: #174de0;
+    }
+    .logout-btn {
+      background: #e74c3c;
+      width: auto;
+      margin-left: auto;
+      display: inline-block;
+    }
+    .logout-btn:hover { background: #c0392b; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1d2a3a;
+      color: white;
+      padding: 14px 28px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 24px auto;
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    .section {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid #e5eaf2;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+    .status {
+      min-height: 22px;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: auto;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #e5eaf2;
+      padding: 10px;
+      text-align: center;
+      font-size: 12px;
+    }
+    th {
+      background: #f2f6ff;
+    }
+    .delete-btn {
+      background: #e74c3c;
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .delete-btn:hover { background: #c0392b; }
+  </style>
+</head>
+<body>
+  <div id="loginPage" class="login-box">
+    <h2>Login Admin</h2>
+    <form id="loginForm">
+      <div class="field">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+      </div>
+      <button type="submit">Masuk</button>
+      <div id="loginStatus" class="status"></div>
+    </form>
+  </div>
+
+  <div id="appPage" class="hidden">
+    <div class="topbar">
+      <div><strong>Sistem Penilaian Rapor</strong> - MAN 3 Bogor</div>
+      <button class="logout-btn" type="button" id="logoutBtn">Logout</button>
+    </div>
+
+    <div class="container">
+      <h3>Input Nilai Siswa</h3>
+
+      <form id="nilaiForm">
+        <div class="grid">
+          <div class="field">
+            <label for="nis">NIS</label>
+            <input type="text" id="nis" name="nis" required />
+          </div>
+          <div class="field">
+            <label for="nama">Nama Siswa</label>
+            <input type="text" id="nama" name="nama" required />
+          </div>
+          <div class="field">
+            <label for="kelas">Kelas</label>
+            <input type="text" id="kelas" name="kelas" required />
+          </div>
+          <div class="field">
+            <label for="semester">Semester</label>
+            <select id="semester" name="semester" required>
+              <option value="">Pilih</option>
+              <option value="Ganjil">Ganjil</option>
+              <option value="Genap">Genap</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Ulangan Harian</div>
+          <div class="grid">
+            <div class="field"><label for="uh1">UH 1</label><input type="number" id="uh1" name="uh1" min="0" max="100" /></div>
+            <div class="field"><label for="uh2">UH 2</label><input type="number" id="uh2" name="uh2" min="0" max="100" /></div>
+            <div class="field"><label for="uh3">UH 3</label><input type="number" id="uh3" name="uh3" min="0" max="100" /></div>
+            <div class="field"><label for="uh4">UH 4</label><input type="number" id="uh4" name="uh4" min="0" max="100" /></div>
+            <div class="field"><label for="uh5">UH 5</label><input type="number" id="uh5" name="uh5" min="0" max="100" /></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Asesmen Sumatif</div>
+          <div class="grid">
+            <div class="field"><label for="sts">STS / Tengah Semester</label><input type="number" id="sts" name="sts" min="0" max="100" /></div>
+            <div class="field"><label for="sas">SAS / Akhir Semester</label><input type="number" id="sas" name="sas" min="0" max="100" /></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Absensi</div>
+          <div class="grid">
+            <div class="field"><label for="hadir">Hadir</label><input type="number" id="hadir" name="hadir" min="0" max="100" /></div>
+            <div class="field"><label for="sakit">Sakit</label><input type="number" id="sakit" name="sakit" min="0" max="100" /></div>
+            <div class="field"><label for="izin">Izin</label><input type="number" id="izin" name="izin" min="0" max="100" /></div>
+            <div class="field"><label for="alpha">Alpha</label><input type="number" id="alpha" name="alpha" min="0" max="100" /></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <button type="submit">Simpan Nilai</button>
+          <div id="saveStatus" class="status"></div>
+        </div>
+      </form>
+
+      <div class="section">
+        <div class="section-title">Daftar Nilai Siswa</div>
+        <table>
+          <thead>
+            <tr>
+              <th>NIS</th>
+              <th>Nama</th>
+              <th>Kelas</th>
+              <th>Semester</th>
+              <th>UH 1</th>
+              <th>UH 2</th>
+              <th>UH 3</th>
+              <th>UH 4</th>
+              <th>UH 5</th>
+              <th>STS</th>
+              <th>SAS</th>
+              <th>Hadir</th>
+              <th>Sakit</th>
+              <th>Izin</th>
+              <th>Alpha</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="nilaiTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const loginPage = document.getElementById('loginPage');
+    const appPage = document.getElementById('appPage');
+    const loginForm = document.getElementById('loginForm');
+    const nilaiForm = document.getElementById('nilaiForm');
+    const loginStatus = document.getElementById('loginStatus');
+    const saveStatus = document.getElementById('saveStatus');
+    const tableBody = document.getElementById('nilaiTableBody');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    function getToken() {
+      return localStorage.getItem('raporToken');
+    }
+
+    function setLoggedIn(token) {
+      localStorage.setItem('raporToken', token);
+      loginPage.classList.add('hidden');
+      appPage.classList.remove('hidden');
+    }
+
+    function setLoggedOut() {
+      localStorage.removeItem('raporToken');
+      appPage.classList.add('hidden');
+      loginPage.classList.remove('hidden');
+      loginForm.reset();
+    }
+
+    function checkSession() {
+      const token = getToken();
+      if (token) {
+        setLoggedIn(token);
+        loadData();
+      } else {
+        setLoggedOut();
+      }
+    }
+
+    loginForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const payload = {
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value
+      };
+
+      try {
+        const response = await fetch('http://localhost:3000/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || 'Login gagal');
+        }
+
+        loginStatus.style.color = 'green';
+        loginStatus.textContent = 'Login berhasil';
+        setLoggedIn(result.token);
+        await loadData();
+      } catch (error) {
+        loginStatus.style.color = 'red';
+        loginStatus.textContent = error.message;
+      }
+    });
+
+    logoutBtn.addEventListener('click', function () {
+      setLoggedOut();
+    });
+
+    async function loadData() {
+      const token = getToken();
+      if (!token) return;
+
+      try {
+        const response = await fetch('http://localhost:3000/api/rapor/data', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || 'Gagal memuat data');
+        }
+
+        tableBody.innerHTML = '';
+
+        if (!result.data || result.data.length === 0) {
+          tableBody.innerHTML = '<tr><td colspan="16">Belum ada data siswa.</td></tr>';
+          return;
+        }
+
+        result.data.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${item.nis}</td>
+            <td>${item.nama}</td>
+            <td>${item.kelas}</td>
+            <td>${item.semester}</td>
+            <td>${item.uh1}</td>
+            <td>${item.uh2}</td>
+            <td>${item.uh3}</td>
+            <td>${item.uh4}</td>
+            <td>${item.uh5}</td>
+            <td>${item.sts}</td>
+            <td>${item.sas}</td>
+            <td>${item.hadir}</td>
+            <td>${item.sakit}</td>
+            <td>${item.izin}</td>
+            <td>${item.alpha}</td>
+            <td><button class="delete-btn" data-id="${item.id}">Hapus</button></td>
+          `;
+          tableBody.appendChild(row);
+        });
+
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', async function () {
+            const id = this.dataset.id;
+            await deleteData(id);
+          });
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    async function deleteData(id) {
+      const token = getToken();
+      if (!token) return;
+
+      try {
+        const response = await fetch(`http://localhost:3000/api/rapor/${id}`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || 'Gagal menghapus data');
+        }
+
+        await loadData();
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    nilaiForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const token = getToken();
+      if (!token) {
+        saveStatus.style.color = 'red';
+        saveStatus.textContent = 'Silakan login terlebih dahulu.';
+        return;
+      }
+
+      const formData = new FormData(nilaiForm);
+      const payload = new URLSearchParams();
+      for (const [key, value] of formData.entries()) {
+        payload.append(key, value);
+      }
+
+      try {
+        const response = await fetch('http://localhost:3000/api/rapor/input', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            Authorization: `Bearer ${token}`
+          },
+          body: payload.toString()
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || 'Gagal menyimpan data');
+        }
+
+        saveStatus.style.color = 'green';
+        saveStatus.textContent = 'Data berhasil disimpan!';
+        nilaiForm.reset();
+        await loadData();
+      } catch (error) {
+        saveStatus.style.color = 'red';
+        saveStatus.textContent = error.message;
+      }
+    });
+
+    checkSession();
+  </script>
+</body>
+</html>
